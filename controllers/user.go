@@ -1,22 +1,24 @@
-package user
+package controllers
 
 import (
 	"net/http"
+	"ormapi/entities"
 	"ormapi/helper"
+	"ormapi/models"
 
 	"github.com/labstack/echo/v4"
 )
 
 type UserController struct {
-	model UserModel
+	model models.UserModel
 }
 
-func (uc *UserController) SetModel(m UserModel) {
+func (uc *UserController) SetModel(m models.UserModel) {
 	uc.model = m
 }
 
 func (uc *UserController) Register(c echo.Context) error {
-	input := User{}
+	input := entities.User{}
 	if err := c.Bind(&input); err != nil {
 		c.Logger().Error("terjadi kesalahan bind", err.Error())
 		return c.JSON(helper.ReponsFormat(http.StatusBadRequest, "terdapat kesalahan input dari user", nil))

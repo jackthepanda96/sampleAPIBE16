@@ -1,23 +1,25 @@
-package book
+package controllers
 
 import (
 	"net/http"
+	"ormapi/entities"
 	"ormapi/helper"
+	"ormapi/models"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 type BookController struct {
-	model BookModel
+	model models.BookModel
 }
 
-func (bc *BookController) SetModel(m BookModel) {
+func (bc *BookController) SetModel(m models.BookModel) {
 	bc.model = m
 }
 
 func (bc *BookController) AddBook(c echo.Context) error {
-	input := Book{}
+	input := entities.Book{}
 	if err := c.Bind(&input); err != nil {
 		c.Logger().Error("terjadi kesalahan bind", err.Error())
 		return c.JSON(helper.ReponsFormat(http.StatusBadRequest, "terdapat kesalahan input dari Book", nil))

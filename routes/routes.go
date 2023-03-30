@@ -1,13 +1,12 @@
 package routes
 
 import (
-	"ormapi/book"
-	"ormapi/user"
+	"ormapi/controllers"
 
 	"github.com/labstack/echo/v4"
 )
 
-func Route(e *echo.Echo, uc user.UserController, bc book.BookController) {
+func Route(e *echo.Echo, uc controllers.UserController, bc controllers.BookController) {
 	e.POST("/users", uc.Register)
 	e.POST("/login", uc.Login())
 	e.GET("/users", uc.GetUser())

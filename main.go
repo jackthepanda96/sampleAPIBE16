@@ -1,10 +1,11 @@
 package main
 
 import (
-	"ormapi/book"
 	"ormapi/config"
+	"ormapi/controllers"
+	"ormapi/entities"
+	"ormapi/models"
 	"ormapi/routes"
-	"ormapi/user"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,17 +13,17 @@ import (
 func main() {
 	e := echo.New()
 	cfg := config.InitSQL()
-	cfg.AutoMigrate(user.User{})
-	cfg.AutoMigrate(book.Book{})
+	cfg.AutoMigrate(entities.User{})
+	cfg.AutoMigrate(entities.Book{})
 
-	mdl := user.UserModel{}
+	mdl := models.UserModel{}
 	mdl.SetDB(cfg)
-	ctl := user.UserController{}
+	ctl := controllers.UserController{}
 	ctl.SetModel(mdl)
 
-	bookMdl := book.BookModel{}
+	bookMdl := models.BookModel{}
 	bookMdl.SetDB(cfg)
-	bookCtl := book.BookController{}
+	bookCtl := controllers.BookController{}
 	bookCtl.SetModel(bookMdl)
 
 	// ROUTING
