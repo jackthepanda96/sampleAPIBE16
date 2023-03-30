@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"ormapi/entities"
 	"ormapi/helper"
@@ -11,6 +12,7 @@ import (
 
 type UserController struct {
 	model models.UserModel
+	Km    models.KeyModel
 }
 
 func (uc *UserController) SetModel(m models.UserModel) {
@@ -48,13 +50,14 @@ func (uc *UserController) Login() echo.HandlerFunc {
 		}
 
 		res, err := uc.model.Login(input.Hp, input.Password)
-
 		if err != nil {
 			c.Logger().Error("terjadi kesalahan ", err.Error())
 			return c.JSON(helper.ReponsFormat(http.StatusInternalServerError, "terdapat kesalahan pada server", nil))
 		}
 
-		return c.JSON(helper.ReponsFormat(http.StatusOK, "sukses login", res))
+		key, _ := uc.Km.AddKey()
+
+		return c.JSON(helper.ReponsFormat(http.StatusOK, fmt.Sprint("use this key to akses another api - ", key), res))
 	}
 }
 

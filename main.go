@@ -15,6 +15,7 @@ func main() {
 	cfg := config.InitSQL()
 	cfg.AutoMigrate(entities.User{})
 	cfg.AutoMigrate(entities.Book{})
+	cfg.AutoMigrate(entities.Keys{})
 
 	mdl := models.UserModel{}
 	mdl.SetDB(cfg)
@@ -26,8 +27,14 @@ func main() {
 	bookCtl := controllers.BookController{}
 	bookCtl.SetModel(bookMdl)
 
+	keyMdl := models.KeyModel{}
+	keyMdl.SetModel(cfg)
+	keyCtl := controllers.KeyController{}
+	keyCtl.SetModel(keyMdl)
+	ctl.Km = keyMdl
+
 	// ROUTING
-	routes.Route(e, ctl, bookCtl)
+	routes.Route(e, ctl, bookCtl, keyCtl, cfg)
 
 	e.Start(":8000")
 }
