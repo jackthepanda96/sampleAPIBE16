@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"ormapi/book"
 	"ormapi/config"
+	"ormapi/helper"
 	"ormapi/routes"
 	"ormapi/user"
 
@@ -24,6 +26,9 @@ func main() {
 	bookMdl.SetDB(cfg)
 	bookCtl := book.BookController{}
 	bookCtl.SetModel(bookMdl)
+
+	token := helper.GenerateJWT(1, "manager")
+	fmt.Println("jwt yang dibuat", token)
 
 	// ROUTING
 	routes.Route(e, ctl, bookCtl)

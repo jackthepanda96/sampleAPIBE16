@@ -14,16 +14,13 @@ func Route(e *echo.Echo, uc user.UserController, bc book.BookController) {
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 
-	users := e.Group("/users")
-	books := e.Group("/books")
-
 	e.POST("/login", uc.Login())
+	e.POST("/users", uc.Register)
 
-	users.POST("/users", uc.Register)
-	users.GET("/users", uc.GetUser())
-	// e.GET("/users/:user_id/books")
+	e.GET("/books", bc.GetBook())
 
-	books.GET("/books/:bookId", bc.GetBookByID())
-	books.GET("/books", bc.GetBook())
-	books.POST("/books", bc.AddBook)
+	e.GET("/users", uc.GetUser(), middleware.JWT([]byte("S3cr3t!!")))
+	// // e.GET("/users/:user_id/books")
+	e.GET("/books/:bookId", bc.GetBookByID(), middleware.JWT([]byte("S3cr3t!!")))
+	e.POST("/books", bc.AddBook, middleware.JWT([]byte("S3cr3t!!")))
 }

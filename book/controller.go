@@ -5,6 +5,7 @@ import (
 	"ormapi/helper"
 	"strconv"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,12 +18,14 @@ func (bc *BookController) SetModel(m BookModel) {
 }
 
 func (bc *BookController) AddBook(c echo.Context) error {
+	userID, _ := helper.DecodeJWT(c.Get("user").(*jwt.Token))
+
 	input := Book{}
 	if err := c.Bind(&input); err != nil {
 		c.Logger().Error("terjadi kesalahan bind", err.Error())
 		return c.JSON(helper.ReponsFormat(http.StatusBadRequest, "terdapat kesalahan input dari Book", nil))
 	}
-
+	input.UserID = userID
 	res, err := bc.model.Insert(input)
 
 	if err != nil {

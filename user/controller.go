@@ -52,7 +52,9 @@ func (uc *UserController) Login() echo.HandlerFunc {
 			return c.JSON(helper.ReponsFormat(http.StatusInternalServerError, "terdapat kesalahan pada server", nil))
 		}
 
-		return c.JSON(helper.ReponsFormat(http.StatusOK, "sukses login", res))
+		token := helper.GenerateJWT(res.ID, "user")
+
+		return c.JSON(helper.ReponsFormat(http.StatusOK, "sukses login, gunakan token ini pada akses api selanjutnya : "+token, res))
 	}
 }
 

@@ -2,22 +2,34 @@ package helper
 
 import (
 	"log"
-	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateJWT(id uint) string {
+func GenerateJWT(id uint, role string) string {
 	var informasi = jwt.MapClaims{}
 	informasi["id"] = id
-	informasi["valid"] = true
-	informasi["exp"] = time.Now().Add(time.Hour + 1)
-	jwt := jwt.NewWithClaims(jwt.SigningMethodHS256, informasi)
-	token, err := jwt.SignedString("S3cr3t!!")
+	informasi["role"] = "admin"
+
+	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, informasi)
+
+	resultToken, err := rawToken.SignedString([]byte("S3cr3t!!"))
 	if err != nil {
 		log.Println("generate jwt error ", err.Error())
 		return ""
 	}
 
-	return token
+	return resultToken
+}
+
+func DecodeJWT(token *jwt.Token) (uint, string) {
+	if token.Valid {
+		data := token.Claims.(jwt.MapClaims)
+		user_id := data["id"].(float64)
+		role := data["role"].(string)
+
+		return uint(user_id), role
+	}
+
+	return 0, ""
 }
