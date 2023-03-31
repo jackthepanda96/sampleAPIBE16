@@ -14,7 +14,7 @@ func InitSQL() *gorm.DB {
 		"",
 		"localhost",
 		3306,
-		"orm")
+		"clean")
 	db, err := gorm.Open(mysql.Open(connStr), &gorm.Config{})
 	if err != nil {
 		log.Fatal("cannot connect database, ", err.Error())

@@ -6,10 +6,9 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateJWT(id uint, role string) string {
+func GenerateJWT(id string) string {
 	var informasi = jwt.MapClaims{}
 	informasi["id"] = id
-	informasi["role"] = "admin"
 
 	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, informasi)
 
@@ -22,14 +21,13 @@ func GenerateJWT(id uint, role string) string {
 	return resultToken
 }
 
-func DecodeJWT(token *jwt.Token) (uint, string) {
+func DecodeJWT(token *jwt.Token) string {
 	if token.Valid {
 		data := token.Claims.(jwt.MapClaims)
-		user_id := data["id"].(float64)
-		role := data["role"].(string)
+		user_id := data["id"].(string)
 
-		return uint(user_id), role
+		return user_id
 	}
 
-	return 0, ""
+	return ""
 }
