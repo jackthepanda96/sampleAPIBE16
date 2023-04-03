@@ -45,7 +45,7 @@ func (um *userModel) Login(hp, password string) (user.Core, error) {
 	res := User{}
 	// Query login -> select * from users where hp = ? and password = ?
 	if err := um.db.Where("hp = ? ", hp).Find(&res).Error; err != nil {
-		log.Error("Terjadi error saat create user", err.Error())
+		log.Error("Terjadi error saat select user", err.Error())
 		return user.Core{}, err
 	}
 

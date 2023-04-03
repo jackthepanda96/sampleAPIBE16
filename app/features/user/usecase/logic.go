@@ -1,4 +1,4 @@
-package logic
+package usecase
 
 import (
 	"errors"
