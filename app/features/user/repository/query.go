@@ -11,17 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserModel struct {
+type userModel struct {
 	db *gorm.DB
 }
 
 func New(db *gorm.DB) user.Repository {
-	return &UserModel{
+	return &userModel{
 		db: db,
 	}
 }
 
-func (um *UserModel) Insert(newUser user.Core) (user.Core, error) {
+func (um *userModel) Insert(newUser user.Core) (user.Core, error) {
 	var inputUser = User{}
 	hashedPassword, err := helper.GenerateHashedPassword(newUser.Password)
 	if err != nil {
@@ -41,7 +41,7 @@ func (um *UserModel) Insert(newUser user.Core) (user.Core, error) {
 	return newUser, nil
 }
 
-func (um *UserModel) Login(hp, password string) (user.Core, error) {
+func (um *userModel) Login(hp, password string) (user.Core, error) {
 	res := User{}
 	// Query login -> select * from users where hp = ? and password = ?
 	if err := um.db.Where("hp = ? ", hp).Find(&res).Error; err != nil {
@@ -62,7 +62,7 @@ func (um *UserModel) Login(hp, password string) (user.Core, error) {
 	return user.Core{Nama: res.Nama, HP: res.HP}, nil
 }
 
-func (um *UserModel) GetAllUser() ([]User, error) {
+func (um *userModel) GetAllUser() ([]User, error) {
 	res := []User{}
 
 	if err := um.db.Select("hp, nama, id").Find(&res).Error; err != nil {

@@ -7,17 +7,17 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-type UserLogic struct {
+type userLogic struct {
 	m user.Repository
 }
 
 func New(r user.Repository) user.UseCase {
-	return &UserLogic{
+	return &userLogic{
 		m: r,
 	}
 }
 
-func (ul *UserLogic) Login(hp string, password string) (user.Core, error) {
+func (ul *userLogic) Login(hp string, password string) (user.Core, error) {
 	result, err := ul.m.Login(hp, password)
 	if err != nil {
 		return user.Core{}, errors.New("terdapat permasalahan pada server")
@@ -26,7 +26,7 @@ func (ul *UserLogic) Login(hp string, password string) (user.Core, error) {
 	return result, nil
 }
 
-func (ul *UserLogic) Register(newUser user.Core) error {
+func (ul *userLogic) Register(newUser user.Core) error {
 	_, err := ul.m.Insert(newUser)
 	if err != nil {
 		log.Error("register logic error:", err.Error())

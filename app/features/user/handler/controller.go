@@ -8,17 +8,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type UserController struct {
+type userController struct {
 	service user.UseCase
 }
 
 func New(us user.UseCase) user.Handler {
-	return &UserController{
+	return &userController{
 		service: us,
 	}
 }
 
-func (uc *UserController) Register() echo.HandlerFunc {
+func (uc *userController) Register() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		input := RegisterInput{}
 		if err := c.Bind(&input); err != nil {
@@ -36,7 +36,7 @@ func (uc *UserController) Register() echo.HandlerFunc {
 	}
 }
 
-func (uc *UserController) Login() echo.HandlerFunc {
+func (uc *userController) Login() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var input LoginInput
 		if err := c.Bind(&input); err != nil {

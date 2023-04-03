@@ -7,17 +7,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type BookModel struct {
+type bookModel struct {
 	db *gorm.DB
 }
 
 func New(d *gorm.DB) book.Repository {
-	return &BookModel{
+	return &bookModel{
 		db: d,
 	}
 }
 
-func (bm *BookModel) Insert(newBook book.Core, userID string) (book.Core, error) {
+func (bm *bookModel) Insert(newBook book.Core, userID string) (book.Core, error) {
 	var insertData Book
 	insertData.Judul = newBook.Judul
 	insertData.Penerbit = newBook.Penerbit
@@ -45,7 +45,7 @@ func (bm *BookModel) Insert(newBook book.Core, userID string) (book.Core, error)
 // 	return res, nil
 // }
 
-func (bm *BookModel) GetAll() (any, error) {
+func (bm *bookModel) GetAll() (any, error) {
 	type ExpectedRespond struct {
 		Judul string `json:"judul"`
 		Tahun string `json:"tahun"`
@@ -63,7 +63,7 @@ func (bm *BookModel) GetAll() (any, error) {
 	return res, nil
 }
 
-func (bm *BookModel) GetBookByID(id uint) (Book, error) {
+func (bm *bookModel) GetBookByID(id uint) (Book, error) {
 	res := Book{}
 
 	if err := bm.db.Find(&res, id).Error; err != nil {

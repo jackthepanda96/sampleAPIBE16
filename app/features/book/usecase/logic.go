@@ -8,17 +8,17 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-type BookModel struct {
+type bookModel struct {
 	repo book.Repository
 }
 
 func New(br book.Repository) book.UseCase {
-	return &BookModel{
+	return &bookModel{
 		repo: br,
 	}
 }
 
-func (bm *BookModel) AddBook(newBook book.Core, user_id string) (book.Core, error) {
+func (bm *bookModel) AddBook(newBook book.Core, user_id string) (book.Core, error) {
 	result, err := bm.repo.Insert(newBook, user_id)
 	if err != nil {
 		log.Error("terjadi kesalahan input buku", err.Error())
@@ -30,7 +30,7 @@ func (bm *BookModel) AddBook(newBook book.Core, user_id string) (book.Core, erro
 
 	return result, nil
 }
-func (bm *BookModel) GetAllBook() (any, error) {
+func (bm *bookModel) GetAllBook() (any, error) {
 	result, err := bm.repo.GetAll()
 	if err != nil {
 		log.Error("terjadi kesalahan get buku", err.Error())

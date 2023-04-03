@@ -9,17 +9,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type BookController struct {
+type bookController struct {
 	srv book.UseCase
 }
 
 func New(s book.UseCase) book.Handler {
-	return &BookController{
+	return &bookController{
 		srv: s,
 	}
 }
 
-func (bc *BookController) AddBook() echo.HandlerFunc {
+func (bc *bookController) AddBook() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID := helper.DecodeJWT(c.Get("user").(*jwt.Token))
 
@@ -40,7 +40,7 @@ func (bc *BookController) AddBook() echo.HandlerFunc {
 	}
 }
 
-func (bc *BookController) GetAllBook() echo.HandlerFunc {
+func (bc *bookController) GetAllBook() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		res, err := bc.srv.GetAllBook()
 
